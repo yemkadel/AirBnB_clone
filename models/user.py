@@ -1,14 +1,13 @@
 #!/usr/bin/python3
-""" This module contains the usr class """
+"""
+User creation class
+"""
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """ This class defines a User """
+    """Defines attributes for user creation"""
     email = ""
     password = ""
     first_name = ""
     last_name = ""
-
-    #def __str__(self):
-    #    return "[{}] ({}) {}".format(__class__.__name__, self.id, self.__dict__)
