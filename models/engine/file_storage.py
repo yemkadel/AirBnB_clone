@@ -1,54 +1,50 @@
 #!/usr/bin/python3
-""" This is the  File storage module """
+"""
+Class that serializes instances to a JSON file
+and deserializes JSON file to instances
+"""
 import json
-from models.base_model import BaseModel
-from models.user import User
+import os
 
 
 class FileStorage:
-    """ This class defines a FileStorage instance """
+    """ Class that serializes and deserializes JSON objects """
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """ The method returns all the __objects dictionary """
-        return self.__objects
+        """ Returns the dictionary __objects """
+        return FileStorage.__objects
 
     def new(self, obj):
-        """
-        This method adds a new obj in the
-        __objects dictionary with key as
-        <obj class name>.id
-        """
-        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
+        """ Sets in __objects the obj with key <obj class name >.id """
+        key = obj.__class__.__name__ + "." + obj.id
+        FileStorage.__objects[key] = obj
 
     def save(self):
-        """
-        This method serializes dictionary __objects
-        to a JSON File
-        """
-        with open(self.__file_path, "w", encoding="utf-8") as f:
-            obj_dict = {obj_key: self.__objects[obj_key].to_dict()
-                        for obj_key in self.__objects.keys()}
-            json.dump(obj_dict, f)
+        """ Serializes __objects to the JSON file """
+        dictionary = {}
 
-    def delete(self, obj):
-        """
-        This method deletes an object
-        from the __objects dict
-        """
-        del self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)]
+        for key, value in FileStorage.__objects.items():
+            dictionary[key] = value.to_dict()
+
+        with open(FileStorage.__file_path, 'w') as f:
+            json.dump(dictionary, f)
 
     def reload(self):
-        """
-        This method deserializes a JSON file to __objects
-        """
-        try:
-            with open(self.__file_path, "r", encoding="utf-8") as f:
-                obj_dict = json.load(f)
-                for obj in obj_dict.values():
-                    cl_name = obj["__class__"]
-                    del obj["__class__"]
-                    self.new(eval(cl_name)(**obj))
-        except FileNotFoundError:
-            return
+        """ Deserializes __objects from the JSON file """
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.city import City
+        from models.amenity import Amenity
+        from models.state import State
+        from models.review import Review
+        dct = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'City': City, 'Amenity': Amenity, 'State': State,
+               'Review': Review}
+
+        if os.path.exists(FileStorage.__file_path) is True:
+            with open(FileStorage.__file_path, 'r') as f:
+                for key, value in json.load(f).items():
+                    self.new(dct[value['__class__']](**value))

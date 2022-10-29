@@ -22,3 +22,6 @@ $ ./console.py
 Documented commands (type help <topic>):
 ========================================
 EOF  help  quit
+
+Yemi Osifeso <agosifeso@gmail.com>
+Oyewale Olayiwola <mike.ow994@gmail.com>
