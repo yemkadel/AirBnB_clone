@@ -1,6 +1,6 @@
 # 0x00. AirBnB clone - The console
 `Group project` `Python` `OOP`
-![AirBnB hbbb](https://github.com/yemkadel/AirBnB_clone/blob/main/AIRBNB%20HBTN.png)
+![AirBnB hbbb](https://github.com/yemkadel/AirBnB_clone/blob/master/AIRBNB HBTN.png)
 ## :open_book: Learning Objectives
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
 - How to create a Python package
