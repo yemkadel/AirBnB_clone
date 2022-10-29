@@ -72,6 +72,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
 
     def do_all(self, arg):
+        """All command displays all instance"""
         instances = storage.all()
         if len(arg) < 1:
             print(["{}".format(instance) for instance in instances.values()])
