@@ -114,6 +114,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_all(self, arg):
+
         """ Prints string represention of all instances of a given class """
 
         if not arg:
@@ -124,6 +125,7 @@ class HBNBCommand(cmd.Cmd):
 
         if args[0] not in HBNBCommand.l_classes:
             print("** class doesn't exist **")
+
         else:
             all_objs = storage.all()
             list_instances = []
