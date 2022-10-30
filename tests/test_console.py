@@ -8,7 +8,6 @@ from console import HBNBCommand
 
 class TestConsole(unittest.TestCase):
     """class TestConsole"""
-
     def setUp(self):
         """set up stdin and stdout"""
         self.mock_stdin = create_autospec(sys.stdin)
@@ -29,6 +28,7 @@ class TestConsole(unittest.TestCase):
         """Tesing `quit` command"""
         cli = self.create()
         self.assertTrue(cli.onecmd("quit"))
+
 
 if __name__ == '__main__':
     unittest.main()
