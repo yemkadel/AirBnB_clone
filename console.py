@@ -135,38 +135,33 @@ class HBNBCommand(cmd.Cmd):
                     list_instances += [value.__str__()]
             print(list_instances)
 
-    def do_update(self, arg):
-        """ Updates an instance based on the class name and id """
-
-        if not arg:
+    def do_update(self, line):
+        """Updates an instance based on the class name and id and attr name"""
+        args = parse(line)
+        objs = models.storage.all()
+        if len(args) == 0:
             print("** class name missing **")
-            return
-
-        a = ""
-        for argv in arg.split(','):
-            a = a + argv
-
-        args = shlex.split(a)
-
-        if args[0] not in HBNBCommand.l_classes:
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
         else:
-            all_objs = storage.all()
-            for key, objc in all_objs.items():
-                ob_name = objc.__class__.__name__
-                ob_id = objc.id
-                if ob_name == args[0] and ob_id == args[1].strip('"'):
-                    if len(args) == 2:
-                        print("** attribute name missing **")
-                    elif len(args) == 3:
-                        print("** value missing **")
-                    else:
-                        setattr(objc, args[2], args[3])
-                        storage.save()
-                    return
-            print("** no instance found **")
+            key = '{}.{}'.format(args[0], args[1])
+            try:
+                obj = objs[key]
+                if len(args) == 2:
+                    print("** attribute name missing **")
+                elif len(args) == 3:
+                    print("** value missing **")
+                else:
+                    try:
+                        eval(args[3])
+                    except (SyntaxError, NameError):
+                        args[3] = "'{}'".format(args[3])
+                    setattr(obj, args[2], eval(args[3]))
+                    obj.save()
+            except KeyError:
+                print("** no instance found **")
 
     def do_quit(self, line):
         """ Quit command to exit the command interpreter """
