@@ -10,8 +10,9 @@ class TestConsole(unittest.TestCase):
     """class TestConsole"""
     def setUp(self):
         """set up stdin and stdout"""
-        self.mock_stdin = create_autospec(sys.stdin)
-        self.mock_stdout = create_autospec(sys.stdout)
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.mock_stdin = create_autospec(sys.stdin)
+            self.mock_stdout = create_autospec(sys.stdout)
 
     def create(self, server=None):
         """create HBNBCommand"""
